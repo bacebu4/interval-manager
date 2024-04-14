@@ -3,7 +3,7 @@
 class IntervalManager {
   /**
    * @param {Object} options
-   * @param {number=} options.timeoutMs Default value is `60_000` ms
+   * @param {number=} options.timeoutMs Timeout for `.close()` method. Default value is `60_000` ms.
    */
   constructor({ timeoutMs = 60_000 } = {}) {
     /**
