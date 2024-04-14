@@ -4,7 +4,7 @@
   "description": "Interval Manager for handling graceful shutdown",
   "main": "index.js",
   "scripts": {
-    "test": "node --experimental-test-coverage --test-reporter=spec --test-reporter-destination=stdout --test-reporter=@reporters/github --test-reporter-destination=stdout --test ./tests/index.test.js"
+    "test": "node --experimental-test-coverage --test-reporter=spec --test-reporter-destination=stdout --test-reporter=@reporters/github --test-reporter-destination=stdout --test-reporter=cobertura --test-reporter-destination=cobertura-coverage.xml --test ./tests/index.test.js"
   },
   "keywords": [
     "interval",
@@ -18,6 +18,7 @@
   "license": "MIT",
   "devDependencies": {
     "@reporters/github": "^1.7.0",
-    "@types/node": "^20.12.7"
+    "@types/node": "^20.12.7",
+    "cobertura": "^1.0.1"
   }
 }
