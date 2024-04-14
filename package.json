@@ -1,6 +1,6 @@
 {
   "name": "interval-manager",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Interval Manager for handling graceful shutdown",
   "main": "index.js",
   "scripts": {
@@ -16,6 +16,11 @@
   ],
   "author": "Vasilii Krasikov <vasua14735@icloud.com> (bacebu4)",
   "license": "MIT",
+  "repository": "git+https://github.com/bacebu4/interval-manager.git",
+  "bugs": {
+    "url": "https://github.com/bacebu4/interval-manager/issues"
+  },
+  "homepage": "https://github.com/bacebu4/interval-manager#readme",
   "devDependencies": {
     "@reporters/github": "^1.7.0",
     "@types/node": "^20.12.7",
