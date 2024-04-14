@@ -1,25 +1,20 @@
 'use strict';
 
 class IntervalManager {
+  #runningCounter = new Counter();
+  /** @type {NodeJS.Timeout[]} */
+  #intervals = [];
+  /** @type {Promise<undefined> | undefined} */
+  #closingPromise = undefined;
+  /** @type {number} */
+  #timeoutMs;
+
   /**
    * @param {Object} options
    * @param {number=} options.timeoutMs Timeout for `.close()` method. Default value is `60_000` ms.
    */
   constructor({ timeoutMs = 60_000 } = {}) {
-    /**
-     * @private
-     * @type {NodeJS.Timeout[]}
-     */
-    this.intervals = [];
-    /** @private */
-    this.runningCount = new Counter();
-    /**
-     * @private
-     * @type {Promise<undefined> | undefined}
-     */
-    this.closingPromise = undefined;
-    /** @private */
-    this.timeoutMs = timeoutMs;
+    this.#timeoutMs = timeoutMs;
   }
 
   /**
@@ -35,20 +30,20 @@ class IntervalManager {
    * If the Interval Manager is in the closing state then doesn't schedule anything.
    */
   add(callback, ms) {
-    if (this.closingPromise) {
+    if (this.#closingPromise) {
       return;
     }
 
     const interval = setInterval(async () => {
-      this.runningCount.increase();
+      this.#runningCounter.increase();
       try {
         await callback();
       } finally {
-        this.runningCount.decrease();
+        this.#runningCounter.decrease();
       }
     }, ms);
 
-    this.intervals.push(interval);
+    this.#intervals.push(interval);
   }
 
   /**
@@ -62,58 +57,54 @@ class IntervalManager {
    * Will reject the promise if timeout is reached.
    */
   close() {
-    if (this.closingPromise) {
-      return this.closingPromise;
+    if (this.#closingPromise) {
+      return this.#closingPromise;
     }
 
-    this.intervals.forEach(i => clearInterval(i));
+    this.#intervals.forEach(i => clearInterval(i));
 
-    this.closingPromise = new Promise(async (resolve, reject) => {
+    this.#closingPromise = new Promise(async (resolve, reject) => {
       const timeout = setTimeout(() => {
         reject(new Error('Timeout reached'));
-      }, this.timeoutMs);
+      }, this.#timeoutMs);
 
-      this.runningCount.onValueEqualsZero(() => {
+      this.#runningCounter.onValueEqualsZero(() => {
         clearInterval(timeout);
         resolve(undefined);
       });
     });
 
-    return this.closingPromise;
+    return this.#closingPromise;
   }
 }
 
 const noop = () => {};
 
 class Counter {
-  constructor() {
-    this.value = 0;
-    this.onValueEqualsZeroCb = noop;
-  }
+  #value = 0;
+  /** @type {() => void} */
+  #onValueEqualsZeroCb = noop;
 
   increase() {
-    this.value += 1;
+    this.#value += 1;
   }
 
   decrease() {
-    this.value -= 1;
-    this.tryOnValueEqualsZero();
+    this.#value -= 1;
+    this.#tryOnValueEqualsZero();
   }
 
   /**
    * @param {() => void} cb
    */
   onValueEqualsZero(cb) {
-    this.onValueEqualsZeroCb = cb;
-    this.tryOnValueEqualsZero();
+    this.#onValueEqualsZeroCb = cb;
+    this.#tryOnValueEqualsZero();
   }
 
-  /**
-   * @private
-   */
-  tryOnValueEqualsZero() {
-    if (this.value === 0) {
-      this.onValueEqualsZeroCb();
+  #tryOnValueEqualsZero() {
+    if (this.#value === 0) {
+      this.#onValueEqualsZeroCb();
     }
   }
 }
