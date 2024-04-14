@@ -1,0 +1,23 @@
+{
+  "name": "interval-manager",
+  "version": "1.0.0",
+  "description": "Interval Manager for handling graceful shutdown",
+  "main": "index.js",
+  "scripts": {
+    "test": "node --experimental-test-coverage --test-reporter=spec --test-reporter-destination=stdout --test-reporter=@reporters/github --test-reporter-destination=stdout --test ./tests/index.test.js"
+  },
+  "keywords": [
+    "interval",
+    "manager",
+    "graceful",
+    "shutdown",
+    "close",
+    "exit"
+  ],
+  "author": "Vasilii Krasikov <vasua14735@icloud.com> (bacebu4)",
+  "license": "MIT",
+  "devDependencies": {
+    "@reporters/github": "^1.7.0",
+    "@types/node": "^20.12.7"
+  }
+}
