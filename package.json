@@ -1,6 +1,6 @@
 {
   "name": "interval-manager",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Interval Manager for handling graceful shutdown",
   "main": "index.js",
   "scripts": {
