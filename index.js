@@ -82,7 +82,6 @@ const noop = () => {};
 
 class Counter {
   #value = 0;
-  /** @type {function(): void} */
   #onValueEqualsZeroCb = noop;
 
   increase() {
