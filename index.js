@@ -18,7 +18,7 @@ class IntervalManager {
   }
 
   /**
-   * @param {() => Promise<unknown> | unknown} callback
+   * @param {function(): Promise<unknown> | unknown} callback
    * @param {number=} ms
    *
    * Schedules and registers repeated execution of `callback` every `ms` milliseconds.
@@ -47,14 +47,14 @@ class IntervalManager {
   }
 
   /**
-   * @returns {Promise<undefined>}
-   * @throws {Error}
-   *
    * Switcher Interval Manager to closing state and clears all registered intervals.
    *
    * Returns a promise which will resolve as soon as all interval's callbacks will be executed. Supposed to be called in graceful shutdown handler.
    *
    * Will reject the promise if timeout is reached.
+   *
+   * @returns {Promise<undefined>}
+   * @throws {Error}
    */
   close() {
     if (this.#closingPromise) {
@@ -82,7 +82,7 @@ const noop = () => {};
 
 class Counter {
   #value = 0;
-  /** @type {() => void} */
+  /** @type {function(): void} */
   #onValueEqualsZeroCb = noop;
 
   increase() {
@@ -95,7 +95,7 @@ class Counter {
   }
 
   /**
-   * @param {() => void} cb
+   * @param {function(): void} cb
    */
   onValueEqualsZero(cb) {
     this.#onValueEqualsZeroCb = cb;

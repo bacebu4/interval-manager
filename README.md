@@ -29,26 +29,38 @@ intervalManager.add(() => {
 await intervalManager.close();
 ```
 
-## API
+## IntervalManager
 
-### `IntervalManager.prototype.constructor({ timeoutMs })`
+- [IntervalManager](#IntervalManager)
+  - [new IntervalManager(options)](#new_IntervalManager_new)
+  - [.add(callback, [ms])](#IntervalManager+add)
+  - [.close()](#IntervalManager+close) ⇒ <code>Promise.&lt;undefined&gt;</code>
 
-- `timeoutMs` - Timeout for `.close()` method. Default value is `60_000` ms.
+### new IntervalManager(options)
 
-### `IntervalManager.prototype.add(callback, [ms])`
+| Param               | Type                | Description                                                  |
+| ------------------- | ------------------- | ------------------------------------------------------------ |
+| options             | <code>Object</code> |                                                              |
+| [options.timeoutMs] | <code>number</code> | Timeout for `.close()` method. Default value is `60_000` ms. |
 
-Schedules and registers repeated execution of `callback` every `ms` milliseconds.
+### intervalManager.add(callback, [ms])
 
-When delay is larger than 2147483647 or less than 1, the delay will be set to 1. Non-integer delays are truncated to an integer.
+**Kind**: instance method of [<code>IntervalManager</code>](#IntervalManager)
 
-If callback is not a function, a TypeError will be thrown.
+| Param    | Type                  | Description                                                                                                                                                                                                                                                                                                                                                   |
+| -------- | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| callback | <code>function</code> |                                                                                                                                                                                                                                                                                                                                                               |
+| [ms]     | <code>number</code>   | Schedules and registers repeated execution of `callback` every `ms` milliseconds. When delay is larger than 2147483647 or less than 1, the delay will be set to 1. Non-integer delays are truncated to an integer. If callback is not a function, a TypeError will be thrown. If the Interval Manager is in the closing state then doesn't schedule anything. |
 
-If the Interval Manager is in the closing state then doesn't schedule anything.
-
-### `IntervalManager.prototype.close()`
+### intervalManager.close() ⇒ <code>Promise.&lt;undefined&gt;</code>
 
 Switcher Interval Manager to closing state and clears all registered intervals.
 
 Returns a promise which will resolve as soon as all interval's callbacks will be executed. Supposed to be called in graceful shutdown handler.
 
 Will reject the promise if timeout is reached.
+
+**Kind**: instance method of [<code>IntervalManager</code>](#IntervalManager)  
+**Throws**:
+
+- <code>Error</code>
